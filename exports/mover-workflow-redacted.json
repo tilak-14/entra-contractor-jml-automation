@@ -1,0 +1,108 @@
+{
+  "description": "Runs mover tasks when a contractor's department attribute changes.",
+  "executionConditions": {
+    "scope": {
+      "@odata.type": "#microsoft.graph.identityGovernance.ruleBasedSubjectSet",
+      "rule": "(employeeType eq 'Contractor') and (department eq 'Finance')"
+    },
+    "@odata.type": "#microsoft.graph.identityGovernance.triggerAndScopeBasedConditions",
+    "trigger": {
+      "@odata.type": "#microsoft.graph.identityGovernance.attributeChangeTrigger",
+      "triggerAttributes": [
+        {
+          "name": "department"
+        }
+      ]
+    }
+  },
+  "displayName": "Contractor Department Change Workflow",
+  "targetSubjectType": "user",
+  "isEnabled": true,
+  "category": "mover",
+  "deletedDateTime": null,
+  "lastModifiedBy": {
+    "id": "00000000-0000-0000-0000-000000000001"
+  },
+  "createdBy": {
+    "id": "00000000-0000-0000-0000-000000000002"
+  },
+  "nextScheduleRunDateTime": "/Date(1791387868000)/",
+  "isSchedulingEnabled": true,
+  "version": 1,
+  "lastModifiedDateTime": "/Date(1791370449391)/",
+  "quarantineDetails": {
+    "quarantineReason": null,
+    "quarantineType": "notQuarantined",
+    "quarantinedDateTime": null
+  },
+  "administrationScopeTargets": [],
+  "tasks": [
+    {
+      "arguments": [],
+      "executionSequence": 1,
+      "displayName": "Send email to notify manager of user move",
+      "category": "mover",
+      "id": "00000000-0000-0000-0000-000000000003",
+      "description": "Send email to notify user's manager of user move",
+      "taskDefinitionId": "aab41899-9972-422a-9d97-f626014578b7",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [
+        {
+          "name": "groupID",
+          "value": "00000000-0000-0000-0000-000000000004"
+        }
+      ],
+      "executionSequence": 2,
+      "displayName": "Remove user from selected groups",
+      "category": "joiner,leaver,mover",
+      "id": "00000000-0000-0000-0000-000000000005",
+      "description": "Remove user from membership of selected Microsoft Entra groups",
+      "taskDefinitionId": "1953a66c-751c-45e5-8bfe-01462c70da3c",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [
+        {
+          "name": "daysUntilExpiration",
+          "value": "15"
+        }
+      ],
+      "executionSequence": 3,
+      "displayName": "Remove all access package assignments for user",
+      "category": "leaver,mover",
+      "id": "00000000-0000-0000-0000-000000000006",
+      "description": "Remove all access packages assigned to the user",
+      "taskDefinitionId": "42ae2956-193d-4f39-be06-691b8ac4fa1d",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [
+        {
+          "name": "groupID",
+          "value": "00000000-0000-0000-0000-000000000007"
+        }
+      ],
+      "executionSequence": 4,
+      "displayName": "Add user to groups",
+      "category": "joiner,leaver,mover",
+      "id": "00000000-0000-0000-0000-000000000008",
+      "description": "Add user to selected groups",
+      "taskDefinitionId": "22085229-5809-45e8-97fd-270d28d66910",
+      "continueOnError": false,
+      "isEnabled": true
+    }
+  ],
+  "createdDateTime": "/Date(1791370275136)/",
+  "settings": {
+    "quarantineConfiguration": {
+      "conditions": [],
+      "matchMode": "any"
+    }
+  },
+  "id": "00000000-0000-0000-0000-000000000009"
+}

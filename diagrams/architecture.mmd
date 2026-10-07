@@ -1,0 +1,36 @@
+flowchart TD
+    subgraph Joiner["Joiner — Contractor Onboarding"]
+        J1["Trigger: employeeHireDate reached"] --> J2["Scope: employeeType = Contractor"]
+        J2 --> J3["Task 1: Enable user account"]
+        J3 --> J4["Task 2: Generate TAP + email to manager"]
+        J4 --> J5["Task 3: Assign licenses"]
+        J5 --> J6["Task 4: Add to groups"]
+        J6 --> J7["Task 5: Send welcome email"]
+    end
+
+    subgraph Mover["Mover — Department Change"]
+        M1["Trigger: department attribute changed"] --> M2["Scope: employeeType = Contractor"]
+        M2 --> M3["Task 1: Notify manager of move"]
+        M3 --> M4["Task 2: Remove from selected groups"]
+        M4 --> M5["Task 3: Remove access package assignments"]
+        M5 --> M6["Task 4: Add to new groups"]
+        M6 --> M7{{"Dynamic groups: NOT removed by task\nmembership re-evaluates from rule"}}
+    end
+
+    subgraph Leaver["Leaver — Contractor Offboarding"]
+        L1["Trigger: employeeLeaveDateTime passed"] --> L2["Scope: employeeType = Contractor"]
+        L2 --> L3["Task 1: Update attributes (clear department)"]
+        L3 --> L4["Task 2: Disable user account"]
+        L4 --> L5["Task 3: Revoke refresh tokens"]
+        L5 --> L6["Task 4: Remove licenses"]
+        L6 --> L7["Task 5: Remove from static groups"]
+        L7 --> L8["Task 6: Remove from Teams"]
+        L3 -.triggers rule re-evaluation.-> L9{{"Dynamic groups auto-drop\nonce department no longer matches"}}
+    end
+
+    Joiner --> Mover --> Leaver
+
+    style J7 fill:#d4edda,stroke:#28a745
+    style L8 fill:#f8d7da,stroke:#dc3545
+    style M7 fill:#fff3cd,stroke:#ffc107
+    style L9 fill:#fff3cd,stroke:#ffc107

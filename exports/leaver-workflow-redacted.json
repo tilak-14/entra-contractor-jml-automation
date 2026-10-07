@@ -1,0 +1,121 @@
+{
+  "description": "Configure offboarding tasks for employees on their last day of work",
+  "executionConditions": {
+    "scope": {
+      "@odata.type": "#microsoft.graph.identityGovernance.ruleBasedSubjectSet",
+      "rule": "(employeeType eq 'Contractor')"
+    },
+    "@odata.type": "#microsoft.graph.identityGovernance.triggerAndScopeBasedConditions",
+    "trigger": {
+      "offsetInDays": 0,
+      "@odata.type": "#microsoft.graph.identityGovernance.timeBasedAttributeTrigger",
+      "timeBasedAttribute": "employeeLeaveDateTime"
+    }
+  },
+  "displayName": "Contractor Offboarding Workflow",
+  "targetSubjectType": "user",
+  "isEnabled": true,
+  "category": "leaver",
+  "deletedDateTime": null,
+  "lastModifiedBy": {
+    "id": "00000000-0000-0000-0000-000000000001"
+  },
+  "createdBy": {
+    "id": "00000000-0000-0000-0000-000000000002"
+  },
+  "nextScheduleRunDateTime": null,
+  "isSchedulingEnabled": false,
+  "version": 2,
+  "lastModifiedDateTime": "/Date(1791377536779)/",
+  "quarantineDetails": {
+    "quarantineReason": null,
+    "quarantineType": "notQuarantined",
+    "quarantinedDateTime": null
+  },
+  "administrationScopeTargets": [],
+  "tasks": [
+    {
+      "arguments": [
+        {
+          "name": "attributeUpdates",
+          "value": "[{\"AttributeName\":\"department\",\"AttributeType\":\"BuiltIn\",\"Action\":\"Clear\",\"Value\":null}]"
+        },
+        {
+          "name": "updateOnPremisesAccount",
+          "value": "false"
+        }
+      ],
+      "executionSequence": 1,
+      "displayName": "Update user attributes",
+      "category": "joiner,leaver,mover",
+      "id": "00000000-0000-0000-0000-000000000003",
+      "description": "Update or clear user attribute values",
+      "taskDefinitionId": "00000000-0000-0000-0000-000000000004",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [],
+      "executionSequence": 2,
+      "displayName": "Disable User Account",
+      "category": "joiner,leaver",
+      "id": "00000000-0000-0000-0000-000000000005",
+      "description": "Disable user account in the directory",
+      "taskDefinitionId": "1dfdfcc7-52fa-4c2e-bf3a-e3919cc12950",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [],
+      "executionSequence": 3,
+      "displayName": "Revoke all refresh tokens for user",
+      "category": "leaver,mover",
+      "id": "00000000-0000-0000-0000-000000000006",
+      "description": "Revoke all refresh and browser session tokens for user",
+      "taskDefinitionId": "509589a4-0466-4471-829e-49c5e502bdee",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [],
+      "executionSequence": 4,
+      "displayName": "Remove all licenses for user",
+      "category": "leaver",
+      "id": "00000000-0000-0000-0000-000000000007",
+      "description": "Remove all licenses assigned to the user",
+      "taskDefinitionId": "00000000-0000-0000-0000-000000000008",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [],
+      "executionSequence": 5,
+      "displayName": "Remove user from all groups",
+      "category": "leaver",
+      "id": "00000000-0000-0000-0000-000000000009",
+      "description": "Remove user from all Microsoft Entra groups memberships",
+      "taskDefinitionId": "b3a31406-2a15-4c9a-b25b-a658fa5f07fc",
+      "continueOnError": false,
+      "isEnabled": true
+    },
+    {
+      "arguments": [],
+      "executionSequence": 6,
+      "displayName": "Remove user from all Teams",
+      "category": "leaver",
+      "id": "00000000-0000-0000-0000-000000000010",
+      "description": "Remove user from all Teams memberships",
+      "taskDefinitionId": "81f7b200-2816-4b3b-8c5d-dc556f07b024",
+      "continueOnError": false,
+      "isEnabled": true
+    }
+  ],
+  "createdDateTime": "/Date(1791373465636)/",
+  "settings": {
+    "quarantineConfiguration": {
+      "conditions": [],
+      "matchMode": "any"
+    }
+  },
+  "id": "00000000-0000-0000-0000-000000000011"
+}
